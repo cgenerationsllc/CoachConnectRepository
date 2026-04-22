@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     switch (event.type) {
 
       case 'checkout.session.completed': {
-        const session = event.data.object as Stripe.Checkout.Session
+        const session = event.data.object as any
         const trainerId = session.metadata?.trainerId
         const tier = session.metadata?.tier as 'standard' | 'premium' || 'standard'
         const interval = session.metadata?.interval as 'monthly' | 'yearly' || 'monthly'
