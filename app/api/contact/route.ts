@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'noreply@coachconnect.com',
       to: process.env.ADMIN_EMAIL || 'cgenerationsllc@gmail.com',
-      replyTo: email,
+      reply_to: email,
       subject: `CoachConnect Contact: ${subject}`,
       html: `
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px">
