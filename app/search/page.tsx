@@ -80,7 +80,9 @@ export default async function SearchPage({ searchParams }: Props) {
             {/* Sort */}
             <div className="flex items-center gap-2 text-sm">
               <span className="text-white/40">Sort by</span>
-              <SortSelector />
+              <Suspense fallback={<div className="w-32 h-9 bg-white/5 animate-pulse rounded-lg" />}>
+                <SortSelector />
+              </Suspense>
             </div>
           </div>
 

@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import toast from 'react-hot-toast'
 
-export default function SignupPage() {
+function SignupContent() {
   const searchParams = useSearchParams()
   const isTrainer = searchParams.get('role') === 'trainer'
   const [loading, setLoading] = useState(false)
@@ -79,3 +79,12 @@ export default function SignupPage() {
     </div>
   )
 }
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={<div className="w-full max-w-md h-[500px] card animate-pulse" />}>
+      <SignupContent />
+    </Suspense>
+  )
+}
+
