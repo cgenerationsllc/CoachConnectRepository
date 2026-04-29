@@ -20,31 +20,43 @@ import type { Metadata } from 'next'
 interface Props { params: { slug: string } }
 
 async function getTrainer(slug: string): Promise<TrainerProfile | null> {
-  const supabase = createClient()
-  const { data } = await supabase
-    .from('trainer_profiles')
-    .select('*')
-    .eq('slug', slug)
-    .eq('is_active', true)
-    .single()
-  return data
+  try {
+    const supabase = createClient()
+    const { data } = await supabase
+      .from('trainer_profiles')
+      .select('*')
+      .eq('slug', slug)
+      .eq('is_active', true)
+      .single()
+    return data
+  } catch {
+    return null
+  }
 }
 
 async function getReviews(trainerId: string): Promise<Review[]> {
-  const supabase = createClient()
-  const { data } = await supabase
-    .from('reviews')
-    .select('*')
-    .eq('trainer_id', trainerId)
-    .eq('is_flagged', false)
-    .order('created_at', { ascending: false })
-    .limit(30)
-  return data || []
+  try {
+    const supabase = createClient()
+    const { data } = await supabase
+      .from('reviews')
+      .select('*')
+      .eq('trainer_id', trainerId)
+      .eq('is_flagged', false)
+      .order('created_at', { ascending: false })
+      .limit(30)
+    return data || []
+  } catch {
+    return []
+  }
 }
 
 async function logView(trainerId: string) {
-  const supabase = createClient()
-  await supabase.from('profile_views').insert({ trainer_id: trainerId })
+  try {
+    const supabase = createClient()
+    await supabase.from('profile_views').insert({ trainer_id: trainerId })
+  } catch {
+    // silently ignore view logging errors
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -61,13 +73,12 @@ export default async function TrainerPage({ params }: Props) {
   if (!trainer) notFound()
 
   const reviews = await getReviews(trainer.id)
-  await logView(trainer.id)
+  logView(trainer.id).catch(() => {})
 
   return (
     <div className="min-h-screen">
       <Navbar />
 
-      {/* Cover */}
       <div className="relative h-56 md:h-72 bg-charcoal-800 mt-16">
         {trainer.cover_image_url && (
           <Image src={trainer.cover_image_url} alt="Cover" fill className="object-cover opacity-40" priority />
@@ -78,10 +89,8 @@ export default async function TrainerPage({ params }: Props) {
       <div className="max-w-5xl mx-auto px-4 -mt-16 relative z-10 pb-24">
         <div className="flex flex-col lg:flex-row gap-8">
 
-          {/* ── LEFT COLUMN ─────────────────────────── */}
           <div className="flex-1 min-w-0 space-y-5">
 
-            {/* Profile header */}
             <div className="card p-6">
               <div className="flex items-start gap-5">
                 <div className="w-20 h-20 rounded-2xl overflow-hidden bg-charcoal-700 shrink-0 border-2 border-charcoal-950">
@@ -118,14 +127,10 @@ export default async function TrainerPage({ params }: Props) {
                     {trainer.years_experience > 0 && (
                       <span className="flex items-center gap-1.5"><Clock size={13} />{trainer.years_experience} yrs experience</span>
                     )}
-                    {trainer.gender && (
-                      <span className="capitalize text-white/30">{trainer.gender.replace('_', ' ')}</span>
-                    )}
                   </div>
                 </div>
               </div>
 
-              {/* Quick info row */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-5 pt-5 border-t border-white/5">
                 {(trainer.session_rate_min || trainer.session_rate_max) && (
                   <div className="flex items-center gap-2">
@@ -145,7 +150,7 @@ export default async function TrainerPage({ params }: Props) {
                     </div>
                   </div>
                 )}
-                {trainer.languages.length > 0 && (
+                {trainer.languages && trainer.languages.length > 0 && (
                   <div className="flex items-center gap-2">
                     <MessageSquare size={15} className="text-green-400" />
                     <div>
@@ -157,7 +162,6 @@ export default async function TrainerPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Video intro */}
             {trainer.intro_video_url && (
               <div className="card p-5">
                 <h2 className="font-display font-bold text-lg mb-3 flex items-center gap-2">
@@ -170,7 +174,6 @@ export default async function TrainerPage({ params }: Props) {
               </div>
             )}
 
-            {/* Bio */}
             {trainer.bio && (
               <div className="card p-6">
                 <h2 className="font-display font-bold text-lg mb-3">About</h2>
@@ -178,7 +181,6 @@ export default async function TrainerPage({ params }: Props) {
               </div>
             )}
 
-            {/* Sports & Goals */}
             {(trainer.sports.length > 0 || trainer.goals.length > 0) && (
               <div className="card p-6 space-y-4">
                 {trainer.sports.length > 0 && (
@@ -204,7 +206,6 @@ export default async function TrainerPage({ params }: Props) {
               </div>
             )}
 
-            {/* Certifications */}
             {trainer.certifications.length > 0 && (
               <div className="card p-6">
                 <h2 className="font-display font-bold text-lg mb-3 flex items-center gap-2">
@@ -220,8 +221,7 @@ export default async function TrainerPage({ params }: Props) {
               </div>
             )}
 
-            {/* Gallery */}
-            {trainer.gallery_urls.length > 0 && (
+            {trainer.gallery_urls && trainer.gallery_urls.length > 0 && (
               <div className="card p-6">
                 <h2 className="font-display font-bold text-lg mb-4">Gallery</h2>
                 <div className="grid grid-cols-3 gap-3">
@@ -234,7 +234,6 @@ export default async function TrainerPage({ params }: Props) {
               </div>
             )}
 
-            {/* Reviews */}
             <div className="card p-6">
               <div className="flex items-center justify-between mb-5">
                 <h2 className="font-display font-bold text-lg">
@@ -250,7 +249,6 @@ export default async function TrainerPage({ params }: Props) {
               <ReviewList reviews={reviews} />
             </div>
 
-            {/* Leave a review */}
             <div className="card p-6">
               <h2 className="font-display font-bold text-lg mb-4">Leave a Review</h2>
               <p className="text-white/40 text-sm mb-5">Only users who have contacted this coach can leave a review.</p>
@@ -258,13 +256,10 @@ export default async function TrainerPage({ params }: Props) {
             </div>
           </div>
 
-          {/* ── RIGHT COLUMN ─────────────────────────── */}
           <div className="lg:w-80 shrink-0">
             <div className="sticky top-24 space-y-4">
-              {/* Contact / Inquiry form */}
               <InquiryForm trainer={trainer} />
 
-              {/* Social links */}
               {(trainer.website_url || trainer.instagram_handle || trainer.youtube_url || trainer.tiktok_handle || trainer.facebook_url) && (
                 <div className="card p-5">
                   <h3 className="text-sm font-semibold text-white/50 mb-3">Connect</h3>
@@ -298,7 +293,6 @@ export default async function TrainerPage({ params }: Props) {
                 </div>
               )}
 
-              {/* Report button */}
               <ReportButton trainerId={trainer.id} trainerName={trainer.display_name} />
             </div>
           </div>
