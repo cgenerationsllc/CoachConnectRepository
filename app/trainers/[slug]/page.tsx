@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer'
 import { StarRating } from '@/components/ui/StarRating'
 import { formatLocation, formatRate } from '@/lib/utils'
 import { MapPin, Wifi, Clock, CheckCircle, Award, DollarSign, Calendar, ShieldCheck, Star } from 'lucide-react'
+import { InquiryForm } from '@/components/trainer/InquiryForm'
 import type { TrainerProfile } from '@/types'
 
 interface Props { params: { slug: string } }
@@ -145,23 +146,8 @@ export default async function TrainerPage({ params }: Props) {
           </div>
         )}
 
-        {/* Contact info box - simple version */}
-        <div className="card p-6">
-          <h2 className="font-display font-bold text-lg mb-4">Contact This Coach</h2>
-          {trainer.contact_email && (
-            <a href={`mailto:${trainer.contact_email}`} className="flex items-center gap-2 text-green-400 hover:underline text-sm mb-2">
-              📧 {trainer.contact_email}
-            </a>
-          )}
-          {trainer.contact_phone && (
-            <a href={`tel:${trainer.contact_phone}`} className="flex items-center gap-2 text-green-400 hover:underline text-sm">
-              📞 {trainer.contact_phone}
-            </a>
-          )}
-          {!trainer.contact_email && !trainer.contact_phone && (
-            <p className="text-white/40 text-sm">Contact information not provided.</p>
-          )}
-        </div>
+        {/* Inquiry form */}
+        <InquiryForm trainer={trainer} />
 
       </div>
       <Footer />
