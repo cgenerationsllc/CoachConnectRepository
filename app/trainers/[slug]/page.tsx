@@ -73,7 +73,7 @@ export default async function TrainerPage({ params }: Props) {
   if (!trainer) notFound()
 
   const reviews = await getReviews(trainer.id)
-  logView(trainer.id).catch(() => {})
+  logView(trainer.id).catch(() => { })
 
   return (
     <div className="min-h-screen">
