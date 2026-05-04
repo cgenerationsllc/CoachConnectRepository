@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { MapPin, Wifi, ShieldCheck, Star } from 'lucide-react'
 import { StarRating } from '@/components/ui/StarRating'
-import { formatLocation, formatRate } from '@/lib/utils'
+import { formatLocation } from '@/lib/utils'
 import type { TrainerProfile } from '@/types'
 
 interface TrainerCardProps {
@@ -61,11 +61,6 @@ export function TrainerCard({ trainer }: TrainerCardProps) {
             reviewCount={trainer.review_count}
             size={13}
           />
-
-          {/* Rate */}
-          <p className="text-green-400 text-sm font-semibold">
-            {formatRate(trainer.session_rate_min, trainer.session_rate_max)}
-          </p>
 
           {/* Location */}
           {(trainer.city || trainer.state) && (

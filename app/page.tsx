@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { TrainerCard } from '@/components/trainer/TrainerCard'
 import { HomeSearchBar } from '@/components/search/HomeSearchBar'
+import { AICoachFinder } from '@/components/search/AICoachFinder'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ArrowRight, Users, Star, ShieldCheck, Zap, CheckCircle } from 'lucide-react'
@@ -62,6 +63,10 @@ export default async function HomePage() {
           </p>
 
           <HomeSearchBar />
+
+          <div className="flex justify-center mt-4">
+            <AICoachFinder />
+          </div>
 
           {/* Stats */}
           <div className="flex items-center justify-center flex-wrap gap-6 mt-10 text-sm text-white/40">

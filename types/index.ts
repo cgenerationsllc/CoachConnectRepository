@@ -37,6 +37,7 @@ export interface TrainerProfile {
   session_rate_min: number | null
   session_rate_max: number | null
   rate_currency: string
+  rate_type: 'session' | 'week' | 'month' | null
   availability_notes: string | null
   languages: string[]
   profile_image_url: string | null

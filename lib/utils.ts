@@ -41,10 +41,11 @@ export function formatLocation(city: string | null, state: string | null): strin
   return 'Location not listed'
 }
 
-export function formatRate(min: number | null, max: number | null): string {
+export function formatRate(min: number | null, max: number | null, type?: string | null): string {
+  const period = type === 'week' ? 'week' : type === 'month' ? 'month' : 'session'
   if (!min && !max) return 'Rate not listed'
-  if (min && max && min !== max) return `$${min}–$${max}/session`
-  return `$${min || max}/session`
+  if (min && max && min !== max) return `$${min}–$${max}/${period}`
+  return `$${min || max}/${period}`
 }
 
 export function formatDate(date: string): string {

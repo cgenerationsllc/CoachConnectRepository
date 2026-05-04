@@ -31,6 +31,7 @@ const schema = z.object({
   intro_video_url: z.string().url().optional().or(z.literal('')),
   session_rate_min: z.number().min(0).optional().nullable(),
   session_rate_max: z.number().min(0).optional().nullable(),
+  rate_type: z.string().optional(),
   availability_notes: z.string().max(200).optional(),
   certifications_text: z.string().optional(),
   is_certified: z.boolean(),
@@ -73,6 +74,7 @@ export function ProfileEditor({ trainer, userId, onSaved }: Props) {
       intro_video_url: trainer?.intro_video_url || '',
       session_rate_min: trainer?.session_rate_min ?? null,
       session_rate_max: trainer?.session_rate_max ?? null,
+      rate_type: trainer?.rate_type || 'session',
       availability_notes: trainer?.availability_notes || '',
       certifications_text: trainer?.certifications.join('\n') || '',
       is_certified: trainer?.is_certified || false,
@@ -143,6 +145,7 @@ export function ProfileEditor({ trainer, userId, onSaved }: Props) {
         intro_video_url: data.intro_video_url || null,
         session_rate_min: data.session_rate_min || null,
         session_rate_max: data.session_rate_max || null,
+        rate_type: data.rate_type || 'session',
         availability_notes: data.availability_notes || null,
         languages: selectedLanguages.length > 0 ? selectedLanguages : ['English'],
         profile_image_url: profileImageUrl || null,
@@ -229,12 +232,17 @@ export function ProfileEditor({ trainer, userId, onSaved }: Props) {
             </select>
           </div>
           <div>
-            <label className="label">Session Rate <span className="text-red-400">*</span></label>
-            <div className="flex gap-2">
+            <label className="label">Rate <span className="text-red-400">*</span></label>
+            <div className="flex gap-2 mb-2">
               <input {...register('session_rate_min', { valueAsNumber: true })} type="number" min="0" placeholder="Min $" className="input w-1/2" />
               <input {...register('session_rate_max', { valueAsNumber: true })} type="number" min="0" placeholder="Max $" className="input w-1/2" />
             </div>
-            <p className="text-white/25 text-xs mt-1">Per session. Enter same number for flat rate.</p>
+            <select {...register('rate_type')} className="input text-sm">
+              <option value="session">Per session</option>
+              <option value="week">Per week</option>
+              <option value="month">Per month</option>
+            </select>
+            <p className="text-white/25 text-xs mt-1">Enter same number in both boxes for a flat rate.</p>
           </div>
         </div>
         <div>

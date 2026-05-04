@@ -82,7 +82,7 @@ export default async function TrainerPage({ params }: Props) {
                 <DollarSign size={15} className="text-green-400" />
                 <div>
                   <p className="text-xs text-white/40">Rate</p>
-                  <p className="text-sm font-semibold text-green-400">{formatRate(trainer.session_rate_min, trainer.session_rate_max)}</p>
+                  <p className="text-sm font-semibold text-green-400">{formatRate(trainer.session_rate_min, trainer.session_rate_max, trainer.rate_type)}</p>
                 </div>
               </div>
             )}
