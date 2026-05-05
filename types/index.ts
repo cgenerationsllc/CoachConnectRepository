@@ -113,30 +113,58 @@ export interface SearchFilters {
 export const SPORTS = [
   'Weightlifting',
   'Weight Loss',
-  'Weight Gain / Muscle Building',
-  'Athletic Performance',
-  'Running & Endurance',
+  // Youth Sports subcategories
+  'Youth Soccer',
+  'Youth Football',
+  'Youth Baseball',
+  'Youth Basketball',
+  'Youth Wrestling',
+  'Youth Track & Field',
+  'Youth Swimming',
+  'Youth Gymnastics',
+  // Adult Sports subcategories
   'Cycling',
-  'Swimming',
-  'Yoga',
-  'Pilates',
-  'CrossFit',
-  'Boxing & Combat Sports',
-  'Martial Arts',
-  'Basketball',
-  'Soccer',
-  'Tennis',
-  'American Football',
-  'Volleyball',
+  'Ironman & Triathlon',
   'Pickleball',
+  'Tennis',
   'Golf',
-  'Lacrosse',
-  'Injury Rehabilitation',
-  'Nutrition Coaching',
-  'Senior Fitness',
+  'Rock Climbing',
+  'Marathon & Endurance Running',
+  'Swimming',
+  'Rowing',
+] as const
+
+// Top level categories shown on homepage and filters
+export const TOP_CATEGORIES = [
+  'Weightlifting',
+  'Weight Loss',
   'Youth Sports',
-  'HIIT & Cardio',
-  'Online Coaching',
+  'Adult Sports',
+] as const
+
+// Subcategories for Youth Sports
+export const YOUTH_SPORTS = [
+  'Youth Soccer',
+  'Youth Football',
+  'Youth Baseball',
+  'Youth Basketball',
+  'Youth Wrestling',
+  'Youth Track & Field',
+  'Youth Swimming',
+  'Youth Gymnastics',
+] as const
+
+// Subcategories for Adult Sports
+export const ADULT_SPORTS = [
+  'Cycling',
+  'Ironman & Triathlon',
+  'Pickleball',
+  'Tennis',
+  'Golf',
+  'Rock Climbing',
+  'Marathon & Endurance Running',
+  'Swimming',
+  'Rowing',
 ] as const
 
 // ── GOALS ─────────────────────────────────────────────────────

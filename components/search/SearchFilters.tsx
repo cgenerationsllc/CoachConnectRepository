@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { SPORTS, GOALS, US_STATES, LANGUAGES } from '@/types'
+import { SPORTS, GOALS, US_STATES, LANGUAGES, TOP_CATEGORIES, YOUTH_SPORTS, ADULT_SPORTS } from '@/types'
 import { SlidersHorizontal, X } from 'lucide-react'
 
 export function SearchFilters() {
@@ -41,14 +41,43 @@ export function SearchFilters() {
         )}
       </div>
 
-      {/* Sport */}
+      {/* Category */}
       <div>
-        <label className="label">Sport / Specialty</label>
-        <select value={params.get('sport') || ''} onChange={(e) => update('sport', e.target.value)} className="input text-sm">
-          <option value="">All specialties</option>
-          {SPORTS.map((s) => <option key={s} value={s}>{s}</option>)}
+        <label className="label">Category</label>
+        <select
+          value={params.get('category') || ''}
+          onChange={(e) => {
+            update('category', e.target.value)
+            update('sport', '')
+          }}
+          className="input text-sm"
+        >
+          <option value="">All categories</option>
+          {TOP_CATEGORIES.map((c) => <option key={c} value={c.toLowerCase().replace(' ', '-')}>{c}</option>)}
         </select>
       </div>
+
+      {/* Youth Sports subcategories */}
+      {params.get('category') === 'youth-sports' && (
+        <div>
+          <label className="label">Youth Sport</label>
+          <select value={params.get('sport') || ''} onChange={(e) => update('sport', e.target.value)} className="input text-sm">
+            <option value="">All youth sports</option>
+            {YOUTH_SPORTS.map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+        </div>
+      )}
+
+      {/* Adult Sports subcategories */}
+      {params.get('category') === 'adult-sports' && (
+        <div>
+          <label className="label">Adult Sport</label>
+          <select value={params.get('sport') || ''} onChange={(e) => update('sport', e.target.value)} className="input text-sm">
+            <option value="">All adult sports</option>
+            {ADULT_SPORTS.map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+        </div>
+      )}
 
       {/* Goal */}
       <div>

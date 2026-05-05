@@ -31,9 +31,10 @@ async function getStats() {
 }
 
 const FEATURED_SPORTS = [
-  'Weight Loss', 'Youth Sports', 'Weightlifting', 'Athletic Performance',
-  'CrossFit', 'Running & Endurance', 'Yoga', 'Boxing & Combat Sports',
-  'Online Coaching', 'Nutrition Coaching',
+  { label: 'Weightlifting', href: '/search?sport=Weightlifting' },
+  { label: 'Weight Loss', href: '/search?sport=Weight+Loss' },
+  { label: 'Youth Sports', href: '/search?category=youth-sports' },
+  { label: 'Adult Sports', href: '/search?category=adult-sports' },
 ]
 
 export default async function HomePage() {
@@ -91,14 +92,14 @@ export default async function HomePage() {
       {/* ── SPORT CATEGORY PILLS ──────────────────────── */}
       <section className="border-y border-white/5 py-5">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-wrap gap-2 justify-center">
-            {FEATURED_SPORTS.map((sport) => (
+          <div className="flex flex-wrap gap-3 justify-center">
+            {FEATURED_SPORTS.map((item) => (
               <Link
-                key={sport}
-                href={`/search?sport=${encodeURIComponent(sport)}`}
-                className="px-4 py-1.5 rounded-full text-sm text-white/50 border border-white/8 hover:border-green-500/40 hover:text-green-400 transition-all duration-150"
+                key={item.label}
+                href={item.href}
+                className="px-6 py-2 rounded-full text-sm font-medium text-white/60 border border-white/10 hover:border-green-500/40 hover:text-green-400 transition-all duration-150"
               >
-                {sport}
+                {item.label}
               </Link>
             ))}
           </div>

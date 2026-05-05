@@ -22,7 +22,32 @@ async function getTrainers(sp: Record<string, string | undefined>) {
   if (sp.q) {
     query = query.or(`display_name.ilike.%${sp.q}%,bio.ilike.%${sp.q}%,tagline.ilike.%${sp.q}%`)
   }
-  if (sp.sport) query = query.contains('sports', [sp.sport])
+  // Handle top level category filtering
+  if (sp.category === 'weightlifting') {
+    query = query.contains('sports', ['Weightlifting'])
+  } else if (sp.category === 'weight-loss') {
+    query = query.contains('sports', ['Weight Loss'])
+  } else if (sp.category === 'youth-sports') {
+    // Show all youth sport subcategories
+    if (sp.sport) {
+      query = query.contains('sports', [sp.sport])
+    } else {
+      query = query.or(
+        'sports.cs.{"Youth Soccer"},sports.cs.{"Youth Football"},sports.cs.{"Youth Baseball"},sports.cs.{"Youth Basketball"},sports.cs.{"Youth Wrestling"},sports.cs.{"Youth Track & Field"},sports.cs.{"Youth Swimming"},sports.cs.{"Youth Gymnastics"}'
+      )
+    }
+  } else if (sp.category === 'adult-sports') {
+    // Show all adult sport subcategories
+    if (sp.sport) {
+      query = query.contains('sports', [sp.sport])
+    } else {
+      query = query.or(
+        'sports.cs.{"Cycling"},sports.cs.{"Ironman & Triathlon"},sports.cs.{"Pickleball"},sports.cs.{"Tennis"},sports.cs.{"Golf"},sports.cs.{"Rock Climbing"},sports.cs.{"Marathon & Endurance Running"},sports.cs.{"Swimming"},sports.cs.{"Rowing"}'
+      )
+    }
+  } else if (sp.sport) {
+    query = query.contains('sports', [sp.sport])
+  }
   if (sp.goal) query = query.contains('goals', [sp.goal])
   if (sp.city) query = query.ilike('city', `%${sp.city}%`)
   if (sp.state) query = query.eq('state', sp.state)
@@ -56,11 +81,20 @@ interface Props {
 export default async function SearchPage({ searchParams }: Props) {
   const { trainers, total } = await getTrainers(searchParams)
 
-  const title = searchParams.sport
-    ? `${searchParams.sport} Coaches`
-    : searchParams.city
-      ? `Coaches in ${searchParams.city}`
-      : 'Find a Coach'
+  const categoryLabels: Record<string, string> = {
+    'weightlifting': 'Weightlifting Coaches',
+    'weight-loss': 'Weight Loss Coaches',
+    'youth-sports': 'Youth Sports Coaches',
+    'adult-sports': 'Adult Sports Coaches',
+  }
+
+  const title = searchParams.category
+    ? categoryLabels[searchParams.category] || 'Find a Coach'
+    : searchParams.sport
+      ? `${searchParams.sport} Coaches`
+      : searchParams.city
+        ? `Coaches in ${searchParams.city}`
+        : 'Find a Coach'
 
   return (
     <div className="min-h-screen">
