@@ -31,8 +31,8 @@ async function getStats() {
 }
 
 const FEATURED_SPORTS = [
-  { label: 'Weightlifting', href: '/search?sport=Weightlifting' },
-  { label: 'Weight Loss', href: '/search?sport=Weight+Loss' },
+  { label: 'Weightlifting', href: '/search?category=weightlifting' },
+  { label: 'Weight Loss', href: '/search?category=weight-loss' },
   { label: 'Youth Sports', href: '/search?category=youth-sports' },
   { label: 'Adult Sports', href: '/search?category=adult-sports' },
 ]

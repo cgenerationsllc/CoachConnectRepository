@@ -36,7 +36,7 @@ export function Navbar() {
 
         {/* Desktop */}
         <nav className="hidden md:flex items-center gap-6 text-sm">
-          <Link href="/search" className="text-white/60 hover:text-white transition-colors">Find a Coach</Link>
+          <Link href="/find" className="text-white/60 hover:text-white transition-colors">Find a Coach</Link>
           <Link href="/pricing" className="text-white/60 hover:text-white transition-colors">Pricing for Coaches</Link>
           <Link href="/about" className="text-white/60 hover:text-white transition-colors">About</Link>
           {user ? (
@@ -58,7 +58,7 @@ export function Navbar() {
       {/* Mobile menu */}
       {open && (
         <div className="md:hidden bg-charcoal-900 border-t border-white/5 px-4 py-5 flex flex-col gap-3">
-          <Link href="/search" className="text-white/70 hover:text-white py-2 text-sm" onClick={() => setOpen(false)}>Find a Coach</Link>
+          <Link href="/find" className="text-white/70 hover:text-white py-2 text-sm" onClick={() => setOpen(false)}>Find a Coach</Link>
           <Link href="/pricing" className="text-white/70 hover:text-white py-2 text-sm" onClick={() => setOpen(false)}>Pricing for Coaches</Link>
           <Link href="/about" className="text-white/70 hover:text-white py-2 text-sm" onClick={() => setOpen(false)}>About</Link>
           {user ? (

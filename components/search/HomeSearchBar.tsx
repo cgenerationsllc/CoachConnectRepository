@@ -9,7 +9,7 @@ export function HomeSearchBar() {
   return (
     <div className="flex justify-center">
       <button
-        onClick={() => router.push('/search')}
+        onClick={() => router.push('/find')}
         className="btn-primary text-lg px-10 py-4 flex items-center gap-3"
       >
         Find a Coach
