@@ -47,13 +47,22 @@ export function SearchFilters() {
         <select
           value={params.get('category') || ''}
           onChange={(e) => {
-            update('category', e.target.value)
-            update('sport', '')
+            const next = new URLSearchParams(params.toString())
+            if (e.target.value) {
+              next.set('category', e.target.value)
+            } else {
+              next.delete('category')
+            }
+            next.delete('sport')
+            router.push(`/search?${next.toString()}`)
           }}
           className="input text-sm"
         >
           <option value="">All categories</option>
-          {TOP_CATEGORIES.map((c) => <option key={c} value={c.toLowerCase().replace(' ', '-')}>{c}</option>)}
+          <option value="weightlifting">Weightlifting</option>
+          <option value="weight-loss">Weight Loss</option>
+          <option value="youth-sports">Youth Sports</option>
+          <option value="adult-sports">Adult Sports</option>
         </select>
       </div>
 
